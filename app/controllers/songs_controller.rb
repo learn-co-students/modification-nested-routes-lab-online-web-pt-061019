@@ -1,3 +1,4 @@
+require 'pry'
 class SongsController < ApplicationController
   def index
     if params[:artist_id]
@@ -25,7 +26,12 @@ class SongsController < ApplicationController
   end
 
   def new
-    @song = Song.new
+    binding.pry
+    if params[:artist_id] && !Artist.exists?(params[:author_id])
+      redirect_to artists_path, alert: "Artist not found."
+    else 
+      @song = Song.new(artist_id: params[:artist_id])
+    end 
   end
 
   def create
